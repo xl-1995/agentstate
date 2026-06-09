@@ -16,6 +16,8 @@ The model *proposes*; a deterministic engine *adjudicates*; every change is an e
 
 [Quickstart](docs/quickstart.md) · [Manifesto](docs/manifesto.md) · [Architecture](docs/ARCHITECTURE.md) · [Roadmap](docs/ROADMAP.md) · [FAQ](docs/FAQ.md) · [中文](README.zh-CN.md)
 
+▶ **[Watch the 36-second demo](https://github.com/xl-1995/agentstate/releases/download/v0.0.1/agentstate-promo.mp4)** &nbsp;·&nbsp; source: [`media/promo`](media/promo)
+
 </div>
 
 ---

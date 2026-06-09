@@ -15,6 +15,8 @@
 
 [快速开始](docs/quickstart.md) · [宣言](docs/manifesto.md) · [架构](docs/ARCHITECTURE.md) · [路线图](docs/ROADMAP.md) · [English](README.md)
 
+▶ **[观看 36 秒演示视频](https://github.com/xl-1995/agentstate/releases/download/v0.0.1/agentstate-promo.mp4)** &nbsp;·&nbsp; 源文件:[`media/promo`](media/promo)
+
 </div>
 
 ---
