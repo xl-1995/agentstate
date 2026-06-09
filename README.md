@@ -4,7 +4,8 @@
 
 ### Agents have memory. They don't have state.
 
-**An open, governed state layer that sits underneath any agent framework.**
+**An open, governed state layer that sits under any agent framework —**
+**so an agent's actions aren't just *smart*, they're *trustworthy*.**
 The model *proposes*; a deterministic engine *adjudicates*; every change is an event.
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -22,43 +23,32 @@ The model *proposes*; a deterministic engine *adjudicates*; every change is an e
 
 ---
 
-An agent remembers what you *said*. It doesn't know whether this refund has *already been issued*. So it reads the thread, decides "looks like we still owe a refund," and pays out twice.
+## The bottleneck is no longer intelligence. It's trust.
 
-The agent ecosystem has poured its energy into the **control layer** — who gets called, how work is routed, which tool fires. That layer is crowded. Underneath it sits a quieter, unowned question:
+Models keep getting smarter. That was never the thing stopping you from putting an agent in charge of real money, real records, real customers. The thing stopping you is that you cannot *trust* what it will do — and cannot *prove* what it did.
 
-> **What is true in the world right now, and which changes to it is this agent allowed to make?**
+A smarter model still has no authoritative answer to "has this already happened?" It still has no limit it cannot exceed. It still leaves no record you can audit. Intelligence and trust are **different axes**, and almost the entire ecosystem has optimized only the first.
 
-AgentState is the answer as a thin, open layer. It pulls the handful of world-changing operations out of free-text reasoning into typed, governed **actions**, adjudicates each one against object state, role limits, and risk rules, and records every change in an append-only ledger. It is **not another agent framework** — it's the gate every agent should pass through before it touches anything real.
+> ### AgentState doesn't make the model smarter. It makes the agent trustworthy.
+
+It does that by pulling the handful of operations that actually change the world out of free-text reasoning and into typed, governed **actions** — each adjudicated against real state, role limits, and risk rules, and each written to an append-only ledger. The model *proposes*; a deterministic engine *decides*; every change is an event you can replay. It is **not another agent framework** — it's the layer of trust the smart part runs on top of.
 
 ---
 
-## The 30-second demo
+## Smart vs. trustworthy
 
-A plain agent calls the refund API directly. It double-pays:
+These are two different jobs. AgentState owns the second.
 
-```text
-💸 Order o-1001 paid out $300 on a $150 order.
-   No record of why. No idea it double-paid. This is today's default.
-```
+| | The model's job | **AgentState's job** |
+|---|---|---|
+| Provides | **Intelligence** — understand, plan, draft, decide *what to propose* | **Trust** — govern, bound, and record *what is allowed to happen* |
+| Gets better with | A bigger/smarter model | A better-defined boundary |
+| Removes the failure | "It didn't understand" | **"It did something it shouldn't have — and no one can say why"** |
+| "Did X already happen?" | A guess from memory | **An authoritative value from state** |
+| "Why did X happen?" | Re-read the transcript | **One row in the audit ledger** |
+| "Could it ever do Y?" | Hope the prompt holds | **A precondition that makes Y impossible** |
 
-The same agent, through AgentState:
-
-```text
-✅ APPLIED          anna refunds o-1001 $150            → RefundIssued
-⛔ DENIED           anna refunds o-1001 $150 again      → refund_exceeds_remaining: already refunded 150
-✋ NEEDS_APPROVAL   anna (agent, ≤$200) refunds $800    → exceeds agent limit 200
-✅ APPLIED          …approved by Sara (supervisor)      → RefundIssued
-⛔ DENIED           close ticket with an open promise   → 1 unkept promise(s): t-1-p1(pending)
-```
-
-Run it yourself — one install, one command:
-
-```bash
-git clone https://github.com/xl-1995/agentstate && cd agentstate
-npm install
-npm run demo      # naive agent vs. governed agent, side by side
-npm test          # the guarantees: allowed / denied / needs-approval / replay
-```
+Capability you can buy by upgrading the model. **Trust you have to *architect*.** That architecture is what AgentState is — and because it's deterministic, the guarantees hold no matter which model sits on top, today's or next year's.
 
 ---
 
@@ -68,13 +58,13 @@ LLM "memory" is a stack of notes that get re-read every turn, can be read out of
 
 |                | **Memory** | **State** |
 |----------------|------------|-----------|
-| Answers        | "What did the customer tell us?" | "Has this refund been issued? Is this ticket closed?" |
+| Answers        | "What was said?" | "What is true — has this payment cleared? is this order shipped?" |
 | Shape          | Append-only notes, recalled & summarized | One authoritative value per object |
 | Changed by     | The model, freely | Only governed actions, adjudicated |
-| Failure mode   | Forgets, repeats, conflates | — (it can't refund twice) |
+| Failure mode   | Forgets, repeats, conflates | — (it cannot do the same thing twice) |
 | Lives in       | The chat log | The state layer |
 
-Most agent stacks blur the two and let the model write directly to the world. AgentState keeps the conversation in the chat log where it belongs, and gives the *world* a layer of its own.
+Most agent stacks blur the two and let the model write directly to the world. That is exactly where trust leaks out. AgentState keeps the conversation in the chat log where it belongs, and gives the *world* a layer of its own.
 
 ---
 
@@ -139,6 +129,32 @@ export const issueRefund: ActionDef = {
 ```
 
 The LLM never reaches `effect`. It can only `request_action`; the engine runs the guards and decides. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full request lifecycle.
+
+---
+
+## See it, in one example
+
+The repo ships **one worked example** to make the idea concrete — it happens to be customer support, but the grammar is the point, not the domain. A plain agent calls an API directly and double-pays; the same agent, through AgentState, is told *no* the second time and leaves a receipt:
+
+```text
+# plain agent, no state layer
+💸 paid out $300 on a $150 order — no record, no idea it double-paid
+
+# same agent, through AgentState
+✅ APPLIED          refund $150                       → RefundIssued
+⛔ DENIED           refund $150 again                 → already refunded (idempotent via state)
+✋ NEEDS_APPROVAL   $800 refund exceeds role limit    → escalates to a supervisor
+✅ APPLIED          …approved by supervisor           → RefundIssued, approval on the record
+```
+
+Not *smarter* — the model proposed the same thing both times. *Trustworthy* — the second world refused to let it happen, and can tell you why. Run it yourself:
+
+```bash
+git clone https://github.com/xl-1995/agentstate && cd agentstate
+npm install
+npm run demo      # naive agent vs. governed agent, side by side
+npm test          # the guarantees: allowed / denied / needs-approval / replay
+```
 
 ---
 
@@ -210,7 +226,7 @@ agentstate/
 
 ## Status
 
-`v0` — deliberately minimal: core runtime + MCP server + one worked example + the demo. No Studio, no UI, no multi-tenancy, no connectors yet. The point of v0 is a single command that runs and shows a governed agent out-refusing a naive one. The roadmap explains what's next and, just as importantly, what we're *not* rushing to build.
+`v0` — deliberately minimal: core runtime + MCP server + one worked example + the demo. No Studio, no UI, no multi-tenancy, no connectors yet. The point of v0 is a single command that demonstrates the core promise — an agent the model cannot talk out of the rules, with a receipt for everything it did. The roadmap explains what's next and, just as importantly, what we're *not* rushing to build.
 
 ## Contributing
 

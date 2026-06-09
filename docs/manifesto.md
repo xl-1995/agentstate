@@ -1,6 +1,16 @@
-# Memory is not State
+# Trustworthy, not smarter
 
 A note on what AgentState is for.
+
+## The real advantage
+
+Every month the models get smarter, and every month it becomes clearer that *smart was never the blocker*. Nobody hesitates to hand an agent your refunds, your inventory, or your customer records because they doubt it can *reason* about them. They hesitate because they cannot **trust** what it will do, and cannot **prove** what it did.
+
+Those are two different axes. Intelligence is about producing a better proposal. **Trust is about what is allowed to happen, and what gets recorded when it does.** A larger model moves you along the first axis and not one inch along the second: it still can't tell you whether an action already happened, still has no limit it can't be talked past, still leaves no audit trail.
+
+> **AgentState's claim is not "your agent will be smarter." It is "your agent will be trustworthy."** The model proposes; a deterministic engine decides; every change is an event you can replay. The intelligence stays the model's job. Trust becomes an architectural property — one that holds the same no matter which model sits on top.
+
+This is why the rest of this document is about state, governance, and ledgers rather than reasoning. Reasoning is handled. Trust is the part nobody built.
 
 ## The confusion
 
