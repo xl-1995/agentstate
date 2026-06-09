@@ -1,0 +1,11 @@
+# Normalize text line endings; let Git handle EOL conversion.
+* text=auto
+
+# Treat media and binary assets as binary (no EOL munging, no diffs).
+*.mp4   binary
+*.gif   binary
+*.png   binary
+*.jpg   binary
+*.woff2 binary
+*.wav   binary
+*.sqlite binary
