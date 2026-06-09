@@ -1,0 +1,38 @@
+{
+  "name": "agentstate",
+  "version": "0.0.1",
+  "description": "A governed state layer for AI agents. Agents have memory; they don't have state.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "demo": "tsx examples/customer-support/compare.ts",
+    "mcp": "tsx examples/customer-support/mcp.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test test/engine.test.ts"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "llm",
+    "mcp",
+    "state",
+    "event-sourcing",
+    "governance",
+    "audit"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "better-sqlite3": "^11.10.0",
+    "zod": "^3.25.0",
+    "zod-to-json-schema": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}
