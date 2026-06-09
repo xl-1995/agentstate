@@ -5,177 +5,145 @@
     <meta name="viewport" content="width=1920, height=1080" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
-      @font-face { font-family: "Inter"; font-weight: 600; font-style: normal; font-display: block;
-        src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
-      @font-face { font-family: "Inter"; font-weight: 700; font-style: normal; font-display: block;
-        src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
-      @font-face { font-family: "Inter"; font-weight: 800; font-style: normal; font-display: block;
-        src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
-      @font-face { font-family: "Inter"; font-weight: 900; font-style: normal; font-display: block;
-        src: url("assets/fonts/inter-latin-900-normal.woff2") format("woff2"); }
-      @font-face { font-family: "JetBrains Mono"; font-weight: 400; font-style: normal; font-display: block;
-        src: url("assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
-      @font-face { font-family: "JetBrains Mono"; font-weight: 700; font-style: normal; font-display: block;
-        src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Inter"; font-weight:600; font-display:block; src:url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Inter"; font-weight:700; font-display:block; src:url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Inter"; font-weight:800; font-display:block; src:url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Inter"; font-weight:900; font-display:block; src:url("assets/fonts/inter-latin-900-normal.woff2") format("woff2"); }
+      @font-face { font-family:"JetBrains Mono"; font-weight:400; font-display:block; src:url("assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+      @font-face { font-family:"JetBrains Mono"; font-weight:700; font-display:block; src:url("assets/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2"); }
 
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body {
-        width: 1920px; height: 1080px; overflow: hidden;
-        background: #07070c;
-        font-family: "Inter", "Segoe UI", sans-serif;
-        -webkit-font-smoothing: antialiased;
-      }
-      .mono { font-family: "JetBrains Mono", "Consolas", monospace; }
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { width:1920px; height:1080px; overflow:hidden; background:#07070c;
+        font-family:"Inter","Segoe UI",sans-serif; -webkit-font-smoothing:antialiased; }
+      .mono { font-family:"JetBrains Mono","Consolas",monospace; }
 
-      /* ---------- background ---------- */
-      #bg { position: absolute; inset: 0; background:
+      #bg { position:absolute; inset:0; background:
         radial-gradient(1200px 700px at 26% 18%, rgba(124,58,237,0.22), transparent 60%),
         radial-gradient(1000px 800px at 82% 88%, rgba(16,185,129,0.10), transparent 60%),
-        linear-gradient(180deg, #07070c 0%, #0a0a12 100%);
-      }
-      #grid { position: absolute; inset: 0; opacity: 0.35;
-        background-image:
-          linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
-        background-size: 64px 64px;
-        mask-image: radial-gradient(closest-side at 50% 50%, #000 60%, transparent 100%);
-        -webkit-mask-image: radial-gradient(closest-side at 50% 50%, #000 60%, transparent 100%);
-      }
-      #vignette { position: absolute; inset: 0;
-        box-shadow: inset 0 0 360px 80px rgba(0,0,0,0.65); }
+        linear-gradient(180deg,#07070c 0%,#0a0a12 100%); }
+      #grid { position:absolute; inset:0; opacity:0.35;
+        background-image:linear-gradient(rgba(255,255,255,0.045) 1px,transparent 1px),
+          linear-gradient(90deg,rgba(255,255,255,0.045) 1px,transparent 1px);
+        background-size:64px 64px;
+        -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 60%,transparent 100%);
+        mask-image:radial-gradient(closest-side at 50% 50%,#000 60%,transparent 100%); }
+      #vignette { position:absolute; inset:0; box-shadow:inset 0 0 360px 80px rgba(0,0,0,0.65); }
 
-      /* ---------- scenes ---------- */
-      .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
-        align-items: center; justify-content: center; }
-      .kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.42em;
-        text-transform: uppercase; margin-bottom: 30px; }
-      .fx { opacity: 0; }
+      .scene { position:absolute; inset:0; display:flex; flex-direction:column;
+        align-items:center; justify-content:center; }
+      .kicker { font-size:22px; font-weight:700; letter-spacing:0.42em; text-transform:uppercase; margin-bottom:34px; }
+      .fx { opacity:0; }
+      .grad-purple { background:linear-gradient(92deg,#c4b5fd,#a78bfa 45%,#7c3aed);
+        -webkit-background-clip:text; background-clip:text; color:transparent; }
 
-      /* ---------- scene 1 ---------- */
-      .s1-line { font-weight: 800; line-height: 1.06; text-align: center; }
-      #s1a { font-size: 96px; color: #e7e7ef; }
-      #s1b { font-size: 132px; margin-top: 10px;
-        background: linear-gradient(92deg, #c4b5fd, #a78bfa 45%, #7c3aed);
-        -webkit-background-clip: text; background-clip: text; color: transparent; }
-      #s1cursor { display: inline-block; width: 10px; height: 96px; margin-left: 14px;
-        background: #a78bfa; vertical-align: -14px; }
+      /* scene 1 */
+      .s1-line { font-weight:800; line-height:1.06; text-align:center; }
+      #s1a { font-size:96px; color:#e7e7ef; }
+      #s1b { font-size:132px; margin-top:10px; }
+      #s1cursor { display:inline-block; width:10px; height:96px; margin-left:14px; background:#a78bfa; vertical-align:-14px; }
 
-      /* ---------- terminal card ---------- */
-      .term { width: 1180px; border-radius: 20px; overflow: hidden;
-        background: rgba(13,14,22,0.92);
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,58,237,0.10);
-        backdrop-filter: blur(2px); }
-      .term-bar { height: 52px; display: flex; align-items: center; gap: 10px;
-        padding: 0 22px; background: rgba(255,255,255,0.03);
-        border-bottom: 1px solid rgba(255,255,255,0.06); }
-      .dot { width: 13px; height: 13px; border-radius: 50%; }
-      .term-title { margin-left: 16px; font-size: 17px; color: #8b8b9a; letter-spacing: 0.04em; }
-      .term-body { padding: 30px 38px; }
-      .row { display: flex; align-items: center; font-size: 30px; line-height: 1.9; color: #cfd0db; }
-      .tag { font-weight: 700; padding: 3px 14px; border-radius: 8px; margin-right: 20px;
-        font-size: 22px; letter-spacing: 0.06em; min-width: 200px; text-align: center; }
-      .ok    { color: #34d399; background: rgba(52,211,153,0.12); }
-      .deny  { color: #f87171; background: rgba(248,113,113,0.12); }
-      .appr  { color: #fbbf24; background: rgba(251,191,36,0.12); }
-      .muted { color: #6f7080; }
-      .think { color: #9aa0b4; font-style: italic; }
-      .chk { color: #34d399; margin-left: 14px; font-weight: 700; }
+      /* scene 2 — the bottleneck */
+      .s2h { font-size:104px; font-weight:900; text-align:center; line-height:1.1; color:#e7e7ef; }
+      #s2h1 .dim { color:#5f6072; text-decoration:line-through; text-decoration-color:#fb7185; text-decoration-thickness:5px; }
+      #s2h2 { font-size:150px; margin-top:6px; }
+      #s2sub { font-size:36px; color:#9aa0b4; margin-top:40px; }
+      #s2sub b { color:#cdd0dc; font-weight:600; }
 
-      /* impact line */
-      #s2impact { font-size: 84px; font-weight: 900; color: #fb7185; text-align: center;
-        text-shadow: 0 0 50px rgba(251,113,133,0.35); }
-      #s2sub { font-size: 34px; color: #9aa0b4; margin-top: 18px; }
-      #s3tag { font-size: 52px; font-weight: 800; color: #ede9fe; margin-top: 44px; text-align:center; }
-      #s3tag b { color: #a78bfa; }
+      /* scene 3 — proposes / decides / event */
+      .beats { display:flex; flex-direction:column; align-items:center; gap:8px; }
+      .beat { font-size:60px; font-weight:800; color:#e7e7ef; }
+      .beat .a { color:#a78bfa; }
+      .beat .g { color:#34d399; }
 
-      /* ---------- scene 4 cards ---------- */
-      #s4h { font-size: 64px; font-weight: 800; color: #f2f2f7; margin-bottom: 64px; text-align: center; }
-      #s4h span { color: #a78bfa; }
-      .cards { display: flex; gap: 30px; }
-      .card { width: 360px; height: 340px; border-radius: 22px; padding: 40px 34px;
-        background: linear-gradient(180deg, rgba(124,58,237,0.10), rgba(255,255,255,0.02));
-        border: 1px solid rgba(167,139,250,0.22); }
-      .card .num { font-size: 22px; font-weight: 700; color: #7c6fb0; letter-spacing: 0.1em; }
-      .card .name { font-size: 46px; font-weight: 800; color: #f4f4f8; margin: 22px 0 18px; }
-      .card .desc { font-size: 27px; line-height: 1.45; color: #aeb0c0; }
+      /* terminal */
+      .term { width:980px; border-radius:18px; overflow:hidden; background:rgba(13,14,22,0.92);
+        border:1px solid rgba(255,255,255,0.08);
+        box-shadow:0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,58,237,0.10); }
+      .term-bar { height:46px; display:flex; align-items:center; gap:9px; padding:0 20px;
+        background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); }
+      .dot { width:12px; height:12px; border-radius:50%; }
+      .term-title { margin-left:14px; font-size:16px; color:#8b8b9a; letter-spacing:0.04em; }
+      .term-body { padding:22px 30px; }
+      .row { display:flex; align-items:center; font-size:26px; line-height:1.75; color:#cfd0db; }
+      .tag { font-weight:700; padding:2px 12px; border-radius:7px; margin-right:18px; font-size:19px;
+        letter-spacing:0.05em; min-width:184px; text-align:center; }
+      .ok { color:#34d399; background:rgba(52,211,153,0.12); }
+      .deny { color:#f87171; background:rgba(248,113,113,0.12); }
+      .appr { color:#fbbf24; background:rgba(251,191,36,0.12); }
+      #s3cap { margin-top:22px; font-size:24px; color:#6f7080; letter-spacing:0.22em; text-transform:uppercase; }
 
-      /* ---------- scene 5 CTA ---------- */
-      #ctaLogo { font-size: 150px; font-weight: 900; letter-spacing: -0.02em;
-        background: linear-gradient(92deg, #ffffff, #c4b5fd 60%, #a78bfa);
-        -webkit-background-clip: text; background-clip: text; color: transparent; }
-      #ctaSub { font-size: 42px; font-weight: 600; color: #d9dae6; margin-top: 14px; }
-      #ctaCmd { margin-top: 46px; font-size: 34px; color: #34d399;
-        padding: 18px 34px; border-radius: 14px;
-        background: rgba(13,14,22,0.9); border: 1px solid rgba(255,255,255,0.08); }
-      #ctaCmd .pmt { color: #6f7080; }
-      #ctaUrl { margin-top: 34px; font-size: 40px; font-weight: 700; color: #c4b5fd; }
-      #ctaBadges { margin-top: 22px; font-size: 26px; color: #7e8092; letter-spacing: 0.08em; }
+      /* scene 4 */
+      #s4h { font-size:62px; font-weight:800; color:#f2f2f7; margin-bottom:56px; text-align:center; }
+      #s4h span { color:#a78bfa; }
+      .cards { display:flex; gap:28px; }
+      .card { width:344px; height:320px; border-radius:22px; padding:38px 32px;
+        background:linear-gradient(180deg,rgba(124,58,237,0.10),rgba(255,255,255,0.02));
+        border:1px solid rgba(167,139,250,0.22); }
+      .card .num { font-size:21px; font-weight:700; color:#7c6fb0; letter-spacing:0.1em; }
+      .card .name { font-size:44px; font-weight:800; color:#f4f4f8; margin:20px 0 16px; }
+      .card .desc { font-size:25px; line-height:1.45; color:#aeb0c0; }
+      #s4tag { margin-top:58px; font-size:50px; font-weight:800; color:#ede9fe; text-align:center; }
+      #s4tag b { color:#34d399; }
+
+      /* scene 5 — CTA */
+      #ctaLogo { font-size:150px; font-weight:900; letter-spacing:-0.02em;
+        background:linear-gradient(92deg,#ffffff,#c4b5fd 60%,#a78bfa);
+        -webkit-background-clip:text; background-clip:text; color:transparent; }
+      #ctaTag { font-size:62px; font-weight:900; margin-top:6px; }
+      #ctaSub { font-size:36px; font-weight:600; color:#bfc2d2; margin-top:18px; }
+      #ctaCmd { margin-top:40px; font-size:32px; color:#34d399; padding:16px 30px; border-radius:13px;
+        background:rgba(13,14,22,0.9); border:1px solid rgba(255,255,255,0.08); }
+      #ctaCmd .pmt { color:#6f7080; }
+      #ctaUrl { margin-top:30px; font-size:38px; font-weight:700; color:#c4b5fd; }
+      #ctaBadges { margin-top:20px; font-size:25px; color:#7e8092; letter-spacing:0.08em; }
     </style>
   </head>
   <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="36"
-      data-width="1920"
-      data-height="1080"
-    >
-      <!-- ===== background ===== -->
-      <div id="bg" class="clip" data-start="0" data-duration="36" data-track-index="0">
-        <div id="grid"></div>
-        <div id="vignette"></div>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="42" data-width="1920" data-height="1080">
+
+      <div id="bg" class="clip" data-start="0" data-duration="42" data-track-index="0">
+        <div id="grid"></div><div id="vignette"></div>
       </div>
 
-      <!-- ===== scene 1 : hook (0–5) ===== -->
-      <div id="s1" class="scene clip" data-start="0" data-duration="5.2" data-track-index="1">
+      <!-- S1 — hook -->
+      <div id="s1" class="scene clip" data-start="0" data-duration="6" data-track-index="1">
         <div id="s1a" class="s1-line fx">Agents have memory.</div>
-        <div id="s1b" class="s1-line fx">They don't have state.<span id="s1cursor"></span></div>
+        <div id="s1b" class="s1-line grad-purple fx">They don't have state.<span id="s1cursor"></span></div>
       </div>
 
-      <!-- ===== scene 2 : the problem (5–12.5) ===== -->
-      <div id="s2" class="scene clip" data-start="5" data-duration="7.6" data-track-index="2">
-        <div id="s2k" class="kicker fx" style="color:#fb7185">Without a state layer</div>
-        <div id="s2card" class="term fx">
-          <div class="term-bar">
-            <span class="dot" style="background:#ff5f57"></span>
-            <span class="dot" style="background:#febc2e"></span>
-            <span class="dot" style="background:#28c840"></span>
-            <span class="term-title mono">plain agent → refund API</span>
-          </div>
-          <div class="term-body mono">
-            <div id="s2r1" class="row fx"><span class="think">agent:</span>&nbsp;customer unhappy → refund $150<span id="s2c1" class="chk fx">✓</span></div>
-            <div id="s2r2" class="row fx think">agent: …re-reads the thread…</div>
-            <div id="s2r3" class="row fx"><span class="think">agent:</span>&nbsp;still owe a refund → refund $150<span id="s2c2" class="chk fx">✓</span></div>
-          </div>
+      <!-- S2 — the bottleneck is trust -->
+      <div id="s2" class="scene clip" data-start="6" data-duration="9.7" data-track-index="2">
+        <div id="s2k" class="kicker fx" style="color:#fb7185">The real bottleneck</div>
+        <div id="s2h1" class="s2h fx">It's not <span class="dim">intelligence</span>.</div>
+        <div id="s2h2" class="s2h grad-purple fx">It's trust.</div>
+        <div id="s2sub" class="fx">A smarter model still can't <b>prove what it did</b> — or be stopped before it does it.</div>
+      </div>
+
+      <!-- S3 — proposes / decides / event + one example -->
+      <div id="s3" class="scene clip" data-start="15.5" data-duration="11.5" data-track-index="3">
+        <div class="beats" style="margin-bottom:46px">
+          <div id="s3b1" class="beat fx">The model <span class="a">proposes</span>.</div>
+          <div id="s3b2" class="beat fx">A deterministic engine <span class="g">decides</span>.</div>
+          <div id="s3b3" class="beat fx">Every change is an <span class="a">event</span>.</div>
         </div>
-        <div id="s2impact" class="fx" style="margin-top:46px">💸 $300 paid out on a $150 order.</div>
-        <div id="s2sub" class="fx">No record of why. It never knew it double-paid.</div>
-      </div>
-
-      <!-- ===== scene 3 : the fix (12.5–21) ===== -->
-      <div id="s3" class="scene clip" data-start="12.5" data-duration="8.6" data-track-index="3">
-        <div id="s3k" class="kicker fx" style="color:#a78bfa">Through AgentState</div>
         <div id="s3card" class="term fx">
           <div class="term-bar">
             <span class="dot" style="background:#ff5f57"></span>
             <span class="dot" style="background:#febc2e"></span>
             <span class="dot" style="background:#28c840"></span>
-            <span class="term-title mono">same agent → request_action</span>
+            <span class="term-title mono">request_action</span>
           </div>
           <div class="term-body mono">
-            <div id="s3r1" class="row fx"><span class="tag ok">APPLIED</span> refund o-1001 $150</div>
+            <div id="s3r1" class="row fx"><span class="tag ok">APPLIED</span> refund $150</div>
             <div id="s3r2" class="row fx"><span class="tag deny">DENIED</span> refund again — already refunded</div>
-            <div id="s3r3" class="row fx"><span class="tag appr">NEEDS&nbsp;APPROVAL</span> $800 &gt; agent limit $200</div>
-            <div id="s3r4" class="row fx"><span class="tag ok">APPLIED</span> …approved by supervisor</div>
+            <div id="s3r3" class="row fx"><span class="tag appr">NEEDS&nbsp;APPROVAL</span> $800 &gt; role limit</div>
           </div>
         </div>
-        <div id="s3tag" class="fx">The model <b>proposes</b>. The engine <b>decides</b>.</div>
+        <div id="s3cap" class="fx">— one example —</div>
       </div>
 
-      <!-- ===== scene 4 : primitives (21–28) ===== -->
-      <div id="s4" class="scene clip" data-start="21" data-duration="7.2" data-track-index="4">
+      <!-- S4 — primitives + tagline -->
+      <div id="s4" class="scene clip" data-start="27" data-duration="7.5" data-track-index="4">
         <div id="s4h" class="fx">Four primitives. <span>One grammar.</span></div>
         <div class="cards">
           <div id="c1" class="card fx"><div class="num">01</div><div class="name">Object</div><div class="desc">What's true right now — one authoritative value.</div></div>
@@ -183,70 +151,71 @@
           <div id="c3" class="card fx"><div class="num">03</div><div class="name">Event</div><div class="desc">An append-only ledger. Who, why, result.</div></div>
           <div id="c4" class="card fx"><div class="num">04</div><div class="name">Projection</div><div class="desc">State is a fold over the events. Replayable.</div></div>
         </div>
+        <div id="s4tag" class="fx">Capability you can buy. <b>Trust you architect.</b></div>
       </div>
 
-      <!-- ===== scene 5 : CTA (28–36) ===== -->
-      <div id="s5" class="scene clip" data-start="28" data-duration="8" data-track-index="5">
+      <!-- S5 — CTA -->
+      <div id="s5" class="scene clip" data-start="34.5" data-duration="7.5" data-track-index="5">
         <div id="ctaLogo" class="fx">AgentState</div>
+        <div id="ctaTag" class="grad-purple fx">Not smarter — trustworthy.</div>
         <div id="ctaSub" class="fx">Agents have memory. Now they have state.</div>
         <div id="ctaCmd" class="mono fx"><span class="pmt">$</span> npm install &amp;&amp; npm run demo</div>
         <div id="ctaUrl" class="mono fx">github.com/xl-1995/agentstate</div>
         <div id="ctaBadges" class="fx">APACHE-2.0 · MCP-COMPATIBLE · TYPESCRIPT</div>
       </div>
+
+      <!-- ===== audio ===== -->
+      <audio id="music" data-start="0"    data-duration="42"   data-track-index="10" data-volume="0.30" src="assets/music/bed.wav"></audio>
+      <audio id="vo1"   data-start="0.8"  data-duration="3.2"  data-track-index="11" data-volume="1.0"  src="assets/vo/vo1.wav"></audio>
+      <audio id="vo2"   data-start="6.6"  data-duration="8.0"  data-track-index="11" data-volume="1.0"  src="assets/vo/vo2.wav"></audio>
+      <audio id="vo3"   data-start="16.0" data-duration="10.4" data-track-index="11" data-volume="1.0"  src="assets/vo/vo3.wav"></audio>
+      <audio id="vo4"   data-start="27.4" data-duration="5.9"  data-track-index="11" data-volume="1.0"  src="assets/vo/vo4.wav"></audio>
+      <audio id="vo5"   data-start="35.0" data-duration="3.7"  data-track-index="11" data-volume="1.0"  src="assets/vo/vo5.wav"></audio>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const IN = (sel, t, y, d) =>
-        tl.fromTo(sel, { opacity: 0, y: y == null ? 28 : y }, { opacity: 1, y: 0, duration: d || 0.6, ease: "power2.out" }, t);
-      const POP = (sel, t) =>
-        tl.fromTo(sel, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.5)" }, t);
-      const OUT = (sel, t, d) =>
-        tl.to(sel, { opacity: 0, duration: d || 0.5, ease: "power1.in" }, t);
+      const IN = (s, t, y, d) => tl.fromTo(s, { opacity:0, y:y==null?28:y }, { opacity:1, y:0, duration:d||0.6, ease:"power2.out" }, t);
+      const OUT = (s, t, d) => tl.to(s, { opacity:0, duration:d||0.5, ease:"power1.in" }, t);
 
-      /* scene 1 */
-      IN("#s1a", 0.4, 26, 0.7);
-      IN("#s1b", 1.7, 34, 0.8);
-      tl.fromTo("#s1cursor", { opacity: 1 }, { opacity: 0, duration: 0.45, repeat: 5, yoyo: true, ease: "steps(1)" }, 2.4);
-      OUT("#s1a", 4.4, 0.5); OUT("#s1b", 4.4, 0.5);
+      /* S1 */
+      IN("#s1a", 0.6, 26, 0.7); IN("#s1b", 1.6, 34, 0.8);
+      tl.fromTo("#s1cursor", { opacity:1 }, { opacity:0, duration:0.45, repeat:5, yoyo:true, ease:"steps(1)" }, 2.3);
+      OUT("#s1a", 5.3, 0.5); OUT("#s1b", 5.3, 0.5);
 
-      /* scene 2 */
-      IN("#s2k", 5.2, 18, 0.5);
-      IN("#s2card", 5.6, 30, 0.7);
-      IN("#s2r1", 6.0, 12, 0.45); POP("#s2c1", 6.7);
-      IN("#s2r2", 7.3, 12, 0.45);
-      IN("#s2r3", 8.0, 12, 0.45); POP("#s2c2", 8.7);
-      IN("#s2impact", 9.5, 26, 0.6);
-      IN("#s2sub", 10.4, 18, 0.55);
-      OUT("#s2k", 12.0, 0.4); OUT("#s2card", 12.0, 0.5);
-      OUT("#s2impact", 12.0, 0.5); OUT("#s2sub", 12.0, 0.5);
+      /* S2 */
+      IN("#s2k", 6.2, 18, 0.5);
+      IN("#s2h1", 6.7, 24, 0.7);
+      IN("#s2h2", 8.2, 30, 0.8);
+      IN("#s2sub", 9.8, 18, 0.6);
+      OUT("#s2k", 14.6, 0.4); OUT("#s2h1", 14.6, 0.5); OUT("#s2h2", 14.6, 0.5); OUT("#s2sub", 14.6, 0.5);
 
-      /* scene 3 */
-      IN("#s3k", 12.8, 18, 0.5);
-      IN("#s3card", 13.1, 30, 0.7);
-      IN("#s3r1", 13.6, 12, 0.45);
-      IN("#s3r2", 14.5, 12, 0.45);
-      IN("#s3r3", 15.4, 12, 0.45);
-      IN("#s3r4", 16.3, 12, 0.45);
-      IN("#s3tag", 17.6, 22, 0.7);
-      OUT("#s3k", 20.4, 0.4); OUT("#s3card", 20.4, 0.5); OUT("#s3tag", 20.4, 0.5);
+      /* S3 */
+      IN("#s3b1", 16.0, 16, 0.5);
+      IN("#s3b2", 17.2, 16, 0.5);
+      IN("#s3b3", 18.4, 16, 0.5);
+      IN("#s3card", 19.8, 26, 0.7);
+      IN("#s3r1", 20.3, 10, 0.4);
+      IN("#s3r2", 21.1, 10, 0.4);
+      IN("#s3r3", 21.9, 10, 0.4);
+      IN("#s3cap", 22.7, 10, 0.5);
+      OUT("#s3b1", 26.4, 0.5); OUT("#s3b2", 26.4, 0.5); OUT("#s3b3", 26.4, 0.5);
+      OUT("#s3card", 26.4, 0.5); OUT("#s3cap", 26.4, 0.5);
 
-      /* scene 4 */
-      IN("#s4h", 21.3, 22, 0.6);
-      IN("#c1", 22.0, 40, 0.55);
-      IN("#c2", 22.35, 40, 0.55);
-      IN("#c3", 22.7, 40, 0.55);
-      IN("#c4", 23.05, 40, 0.55);
-      OUT("#s4h", 27.2, 0.5);
-      tl.to([".card"], { opacity: 0, duration: 0.5, ease: "power1.in" }, 27.2);
+      /* S4 */
+      IN("#s4h", 27.3, 20, 0.6);
+      IN("#c1", 27.9, 38, 0.5); IN("#c2", 28.2, 38, 0.5); IN("#c3", 28.5, 38, 0.5); IN("#c4", 28.8, 38, 0.5);
+      IN("#s4tag", 30.7, 20, 0.6);
+      OUT("#s4h", 33.9, 0.45); tl.to([".card"], { opacity:0, duration:0.45, ease:"power1.in" }, 33.9); OUT("#s4tag", 33.9, 0.45);
 
-      /* scene 5 */
-      IN("#ctaLogo", 28.4, 30, 0.8);
-      IN("#ctaSub", 29.3, 20, 0.6);
-      IN("#ctaCmd", 30.2, 18, 0.55);
-      IN("#ctaUrl", 31.1, 16, 0.5);
-      IN("#ctaBadges", 31.7, 12, 0.5);
+      /* S5 */
+      IN("#ctaLogo", 34.8, 30, 0.8);
+      IN("#ctaTag", 35.7, 22, 0.6);
+      IN("#ctaSub", 36.6, 18, 0.55);
+      IN("#ctaCmd", 37.4, 16, 0.5);
+      IN("#ctaUrl", 38.2, 14, 0.5);
+      IN("#ctaBadges", 38.8, 12, 0.5);
 
       window.__timelines["main"] = tl;
     </script>
